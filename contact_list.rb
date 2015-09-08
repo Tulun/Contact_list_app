@@ -37,10 +37,16 @@ class ContactList
 
 	def new_contact
 		array=Array.new
-		puts "Please input the name of the contact."
-		name = STDIN.gets.chomp.to_s
 		puts "Please input the email of the contact."
 		email = STDIN.gets.chomp.to_s
+		check_email = Contact.duplicate?(email)
+		if check_email == true
+			puts "Duplicate email detected."
+			new_contact
+		else
+		end
+		puts "Please input the name of the contact."
+		name = STDIN.gets.chomp.to_s
 		#binding.pry
 		Contact.create(name,email)
 	end

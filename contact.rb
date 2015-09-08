@@ -49,6 +49,10 @@ class Contact
       show_person = CSV.read("contacts.csv", "r").detect {|c| c[0] == id}
       pp show_person
     end
+
+    def duplicate?(email)
+      CSV.read("contacts.csv", "r").detect {|c| c[2] == email} ? true : false
+    end
     
   end
  
