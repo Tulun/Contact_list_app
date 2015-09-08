@@ -5,11 +5,9 @@ require 'pry'
 # This should be the only file where you use puts and gets
 
 class ContactList
-
-	def initialize
-		@name = ""
-		@email = ""
-		@choice = ARGV[0].downcase
+	@@id = 0
+	def initialize(choice)
+		@choice = choice
 		start
 	end
 
@@ -18,7 +16,11 @@ class ContactList
 		when "help"
 			help
 		when "new"
-			new
+			new_contact
+		when "list"
+			list
+		when "show"
+			show
 		else
 			puts "Nothing happened."
 		end
@@ -31,21 +33,32 @@ class ContactList
 		puts "find - Find a contact"
 	end
 
-	def new
+	def new_contact
 		array=Array.new
-		puts "Please input the name of the contact.\n"
-		@name = gets.chomp.to_s
-		puts "Please input the email of the contact.\n"
-		@email = gets.chomp.to_s
-		array=array[@name, @email]
-		binding.pry
-		puts array
+		puts "Please input the name of the contact."
+		name = STDIN.gets.chomp.to_s
+		puts "Please input the email of the contact."
+		email = STDIN.gets.chomp.to_s
+		#binding.pry
+	    read = CSV.read("contacts.csv", "r").length
+    	@@id = read + 1
+		Contact.create(@@id,name,email)
 	end
 
+	def list
+		CSV.foreach("contacts.csv") do |row|
+			puts row
+		end
+	end
+
+	def show
+		id = ARGV[1]
+		show_person = CSV.read("contacts.csv", "r").detect {|c| c[0] == id}
+		puts show_person
+	end
 end
 
-ContactList.new
-
+ContactList.new(ARGV[0].downcase)
 
 
 # class New 
