@@ -21,6 +21,8 @@ class ContactList
 			list
 		when "show"
 			show
+		when "find"
+			find
 		else
 			puts "Nothing happened."
 		end
@@ -40,21 +42,21 @@ class ContactList
 		puts "Please input the email of the contact."
 		email = STDIN.gets.chomp.to_s
 		#binding.pry
-	    read = CSV.read("contacts.csv", "r").length
-    	@@id = read + 1
-		Contact.create(@@id,name,email)
+		Contact.create(name,email)
 	end
 
 	def list
-		CSV.foreach("contacts.csv") do |row|
-			puts row
-		end
+		Contact.all
 	end
 
 	def show
 		id = ARGV[1]
-		show_person = CSV.read("contacts.csv", "r").detect {|c| c[0] == id}
-		puts show_person
+		Contact.show(id)
+	end
+
+	def find
+		id = ARGV[1]
+		Contact.find(id)
 	end
 end
 

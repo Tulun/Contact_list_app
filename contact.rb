@@ -17,27 +17,37 @@ class Contact
   ## Class Methods
   class << self
     @@id = 0
-    def create(id, name, email)
+    def create(name, email)
       # TODO: Will initialize a contact as well as add it to the list of contacts
       #IDEALLY:
       #contact=Contact.new(name,email)
       array=Array.new
-      array.push(id, name, email)
+      read = CSV.read("contacts.csv", "r").length
+      @@id = read + 1
+      array.push(@@id, name, email)
       CSV.open("contacts.csv","ab") do |csv|
         csv.puts array
       end
     end
  
-    def find(term)
-      # TODO: Will find and return contacts that contain the term in the first name, last name or email
+    def find(id)
+      # TODO: Will find and return contacts that contain the term in the first name,
+       #last name or email
+      show_people = CSV.read("contacts.csv", "r").select {|c| (c[1] || c[2]) == id}
+      pp show_people
     end
  
     def all
       # TODO: Return the list of contacts, as is
+      CSV.foreach("contacts.csv") do |row|
+        pp row
+      end
     end
     
     def show(id)
       # TODO: Show a contact, based on ID
+      show_person = CSV.read("contacts.csv", "r").detect {|c| c[0] == id}
+      pp show_person
     end
     
   end
