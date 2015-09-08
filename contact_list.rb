@@ -37,6 +37,7 @@ class ContactList
 
 	def new_contact
 		array=Array.new
+		phone_hash=Hash.new
 		puts "Please input the email of the contact."
 		email = STDIN.gets.chomp.to_s
 		check_email = Contact.duplicate?(email)
@@ -47,8 +48,23 @@ class ContactList
 		end
 		puts "Please input the name of the contact."
 		name = STDIN.gets.chomp.to_s
+		loop do 
+			puts "Add a number? Yes or no?"
+			input = STDIN.gets.chomp.downcase
+			if input == "yes"
+				puts "Please input phone number. First specify type (e.g mobile, home)"
+				puts "Second, put in your number in XXX-XXX-XXXX format. "
+				type = STDIN.gets.chomp
+				phone = STDIN.gets.chomp
+				phone_hash[phone] = type
+			elsif input == "no"
+				break
+			else
+				puts "Please specify yes or no."
+			end
+		end
 		#binding.pry
-		Contact.create(name,email)
+		Contact.create(name,email,phone_hash)
 	end
 
 	def list
